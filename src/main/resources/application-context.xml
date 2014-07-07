@@ -3,5 +3,12 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <
+    <bean id="coinCalculator" class="coincalculator.CoinCalculator"/>
+    
+    <bean id="greedy" class="coincalculator.Greedy">
+        <property name="coinCalculator">
+            <ref local="coinCalculator"/>
+        </property>
+    </bean>
+    
 </beans>
