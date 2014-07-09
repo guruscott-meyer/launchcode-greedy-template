@@ -13,11 +13,11 @@ public class CoinCalculator {
 
     private static float coins[] = new float[] { 1.0f, 0.25f, 0.1f, 0.05f, 0.01f };
     
-    public String calculateChange(String amountOfChange) {
+    public int calculateChange(String amountOfChange) {
         float changeValue = new Float( amountOfChange ).floatValue();
         int count = 0, i = 0;
-        while( changeValue > 0 ) {
-            if( changeValue >= coins[i] ) {
+        while( Float.compare(changeValue, 0.0f ) > 0 ) {
+            if( Float.compare(changeValue, coins[i]) > 0 ) {
                 changeValue -= coins[i];
                 count++;
             } else {
@@ -25,6 +25,7 @@ public class CoinCalculator {
             }
         }
         
-        return Integer.toString( count );
+//        return Integer.toString( count );
+        return count;
     }
 }
