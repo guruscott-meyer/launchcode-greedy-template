@@ -7,17 +7,18 @@ package coincalculator;
  */
 
 import java.lang.Integer;
+import static java.lang.Math.round;
 import java.util.Scanner;
 
 public class CoinCalculator {
 
-    private static float coins[] = new float[] { 1.0f, 0.25f, 0.1f, 0.05f, 0.01f };
+    private static int coins[] = new int[] { 100, 25, 10, 5, 1 };
     
     public int calculateChange(String amountOfChange) {
-        float changeValue = new Float( amountOfChange ).floatValue();
+        int changeValue = round( Float.parseFloat( amountOfChange ) * 100f );
         int count = 0, i = 0;
-        while( Float.compare(changeValue, 0.0f ) > 0 ) {
-            if( Float.compare(changeValue, coins[i]) > 0 ) {
+        while( changeValue >= 0 && i < coins.length ) {
+            if( changeValue >= coins[i]) {
                 changeValue -= coins[i];
                 count++;
             } else {
