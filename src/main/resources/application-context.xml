@@ -3,11 +3,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="coinCalculator" class="coincalculator.CoinCalculator"/>
+    <bean id="metrolinkCalculator" class="metrolink.MetrolinkCalculator"/>
     
-    <bean id="greedy" class="coincalculator.Greedy">
-        <property name="coinCalculator">
-            <ref local="coinCalculator"/>
+    <bean id="metrolink" class="metrolink.Metrolink">
+        <property name="metrolinkCalculator">
+            <ref local="metrolinkCalculator"/>
         </property>
     </bean>
     
