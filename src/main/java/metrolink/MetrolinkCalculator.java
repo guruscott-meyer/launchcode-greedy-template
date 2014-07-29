@@ -25,7 +25,7 @@ public class MetrolinkCalculator {
         int stopIndex = 1;
         while( resultSet.next() ) {
             System.out.print( stopIndex + ": ");
-            System.out.println( resultSet.getString( "stop_name" ));
+            System.out.println( resultSet.getString( 1 ));
             stopIndex++;
         }
         return stopIndex;
@@ -33,7 +33,7 @@ public class MetrolinkCalculator {
     
     public int getStop( int stopIndex ) {
         Scanner scanner = new Scanner( System.in );
-        int stop = 0;
+        int stop = 1;
         do {
             System.out.print( "Input current stop: " );
             stop = scanner.nextInt();
@@ -44,13 +44,27 @@ public class MetrolinkCalculator {
     }
     
     public String getStopName( ResultSet resultSet, int stop ) throws SQLException {
-        resultSet.absolute( stop );
-        return resultSet.getString( "stop_name");
+        int index = 0;
+        do {
+            if( index == stop ) break;
+            index++;
+        }
+        while( resultSet.next() ); 
+        return resultSet.getString( 1 );
     }
     
-    public long getNextArrivalTime( ResultSet resultSet ) throws SQLException {
-        LocalTime result = resultSet.getTime( "arrival_time" ).toLocalTime();
-        return LocalTime.now().until( result, ChronoUnit.MINUTES );
+    public long getNextArrivalTime( ResultSet resultSet, String time ) throws SQLException {
+        String first = resultSet.getString( 1 );
+        String last = null;
+        while( resultSet.next() ) {
+            String current = resultSet.getString( 1 );
+            //System.out.println( resultSet.getString(1) );
+            if( current.compareTo( time ) >= 0 && last == null ) {
+                last = current;
+            }
+        }
+        if( last == null ) last = first;
+        return LocalTime.now().until( LocalTime.parse( last ), ChronoUnit.MINUTES );
     }
     
 }
