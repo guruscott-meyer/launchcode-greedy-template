@@ -10,6 +10,8 @@ import java.sql.*;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -54,17 +56,37 @@ public class MetrolinkCalculator {
     }
     
     public long getNextArrivalTime( ResultSet resultSet, String time ) throws SQLException {
-        String first = resultSet.getString( 1 );
-        String last = null;
+        
+        ArrayList<LocalTime> timeList = new ArrayList();
         while( resultSet.next() ) {
-            String current = resultSet.getString( 1 );
-            //System.out.println( resultSet.getString(1) );
-            if( current.compareTo( time ) >= 0 && last == null ) {
-                last = current;
+            timeList.add( convertTime( resultSet.getString( 1 ) ) );
+        }
+        LocalTime[] timeArray = new LocalTime[ timeList.size() ];
+        timeList.toArray( timeArray );
+        Arrays.sort( timeArray );
+        LocalTime convertedTime = convertTime( time );
+        LocalTime timeResult = null;
+        for (LocalTime currentTime : timeArray) {
+            if( currentTime.compareTo( convertedTime ) >= 0 ) {
+                timeResult = currentTime;
+                break;
             }
         }
-        if( last == null ) last = first;
-        return LocalTime.now().until( LocalTime.parse( last ), ChronoUnit.MINUTES );
+        if( timeResult == null ) timeResult = timeArray[0];
+        return LocalTime.now().until( timeResult, ChronoUnit.MINUTES );
+    }
+    
+    private LocalTime convertTime( String time ) {
+        String[] values = time.split( ":" );
+        int hour = new Integer( values[0] ).intValue();
+        int minute = new Integer( values[1] ).intValue();
+        int second = 0;
+        
+        if( hour >= 24 ) {
+            hour = hour - 24;
+        }
+        
+        return LocalTime.of( hour, minute, second );
     }
     
 }
