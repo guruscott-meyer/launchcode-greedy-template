@@ -48,7 +48,7 @@ public class Metrolink {
             String station = metrolinkCalculator.getStopName( resultSet2, stop );
             resultSet2.close();
             System.out.println( "You selected: " + station );
-            ResultSet resultSet3 = statement.executeQuery( "SELECT arrival_time FROM stops NATURAL JOIN stop_times WHERE stops.stop_name = \"" + station + "\" GROUP BY arrival_time ORDER BY arrival_time;" );
+            ResultSet resultSet3 = statement.executeQuery( "SELECT arrival_time FROM stops NATURAL JOIN stop_times WHERE stops.stop_name = \"" + station + "\" GROUP BY arrival_time;" );
             long timeResult = metrolinkCalculator.getNextArrivalTime( resultSet3, LocalTime.now().toString() );
             resultSet3.close();
             System.out.println("The next train is arriving in " + timeResult + " minutes." );
