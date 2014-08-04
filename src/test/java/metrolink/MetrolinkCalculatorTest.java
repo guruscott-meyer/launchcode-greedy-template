@@ -19,7 +19,12 @@ public class MetrolinkCalculatorTest {
     @Before
     public void openDatabase() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:metrolink.db");
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to find class for loading the database", e);
+        }
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/metrolink.db");
             statement = connection.createStatement();
         } catch( SQLException sqle ) {
             System.err.println( sqle.getClass().getName() + ": " + sqle.getMessage() );
