@@ -6,33 +6,29 @@
 
 package metrolink;
 
-import java.sql.*;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import org.springframework.stereotype.Component;
+import org.hibernate.HibernateException;
 
 /**
  *
  * @author Scott Meyer
  */
+
+@Component
 public class MetrolinkCalculator {
     
     private static final long ONEDAYINMINUTES = 1440;
     
-    public MetrolinkCalculator() {
-        
-    }
-    
-    public int printStops( ResultSet resultSet ) throws SQLException {
-        int stopIndex = 1;
-        while( resultSet.next() ) {
-            System.out.print( stopIndex + ": ");
-            System.out.println( resultSet.getString( 1 ));
-            stopIndex++;
+    public void printStops( List<Stop> stops ) throws HibernateException {
+        for( int i = 0; i < stops.size(); i++ ) {
+            System.out.print( i + ": ");
+            System.out.println( stops.get(i).getStopName() );
         }
-        return stopIndex;
     }
     
     public int getStop( int stopIndex ) {
@@ -47,24 +43,11 @@ public class MetrolinkCalculator {
         return stop;
     }
     
-    public String getStopName( ResultSet resultSet, int stop ) throws SQLException {
-        int index = 0;
-        do {
-            if( index == stop ) break;
-            index++;
+    public long getNextArrivalTime( List<StopTime> stopTimes, String time ) {
+        LocalTime[] timeArray = new LocalTime[ stopTimes.size() ];
+        for( int i = 0; i <= stopTimes.size(); i++ ) {
+            timeArray[ i ] = convertTime( stopTimes.get( i ).getArrivalTime() );
         }
-        while( resultSet.next() ); 
-        return resultSet.getString( 1 );
-    }
-    
-    public long getNextArrivalTime( ResultSet resultSet, String time ) throws SQLException {
-        
-        ArrayList<LocalTime> timeList = new ArrayList();
-        while( resultSet.next() ) {
-            timeList.add( convertTime( resultSet.getString( 1 ) ) );
-        }
-        LocalTime[] timeArray = new LocalTime[ timeList.size() ];
-        timeList.toArray( timeArray );
         Arrays.sort( timeArray );
         LocalTime convertedTime = convertTime( time );
         LocalTime timeResult = null;
