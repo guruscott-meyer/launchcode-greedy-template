@@ -6,6 +6,6 @@
     <property name="format_sql">true</property>
     <property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
     <property name="connection.driver_class">org.sqlite.JDBC</property>
-    <property name="hibernate.connection.url">jdbc:sqlite:/src/main/resources/metrolink.db</property>
+    <property name="hibernate.connection.url">jdbc:sqlite:C:/users/Scott Meyer/metrolink-project/src/main/resources/metrolink.db</property>
   </session-factory>
 </hibernate-configuration>

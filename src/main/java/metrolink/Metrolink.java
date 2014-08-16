@@ -36,21 +36,11 @@ public class Metrolink {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-//            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/metrolink.db");
-//            statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery( "SELECT stop_name FROM stops WHERE stop_name LIKE \"%METROLINK STATION\" ORDER BY stop_name;");
-            List<Stop> list = session.createQuery( "FROM stops").list();
-//            int stopIndex = metrolinkCalculator.printStops( resultSet );
+            List<Stop> list = session.createQuery( "SELECT stop_name FROM stops WHERE stop_name LIKE \"%METROLINK STATION\" ORDER BY stop_name;"  ).list();
             metrolinkCalculator.printStops( list );
-//            resultSet.close();
             int stop = metrolinkCalculator.getStop( list.size() );
-//            ResultSet resultSet2 = statement.executeQuery( "SELECT stop_name FROM stops WHERE stop_name LIKE \"%METROLINK STATION\" ORDER BY stop_name;");
-//            String station = metrolinkCalculator.getStopName( list, resultSet2 );
-//            resultSet2.close();
             System.out.println( "You selected: " + list.get( stop ).getStopName() );
-//            ResultSet resultSet3 = statement.executeQuery( "SELECT arrival_time FROM stops NATURAL JOIN stop_times WHERE stops.stop_name = \"" + station + "\" GROUP BY arrival_time;" );
             long timeResult = metrolinkCalculator.getNextArrivalTime( list.get( stop ).getStopTimes(), LocalTime.now().toString() );
-//            resultSet3.close();
             System.out.println("The next train is arriving in " + timeResult + " minutes." );
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();
