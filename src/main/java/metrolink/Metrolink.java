@@ -13,6 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
@@ -36,7 +37,9 @@ public class Metrolink {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            List<Stop> list = session.createQuery( "SELECT stop_name FROM stops WHERE stop_name LIKE \"%METROLINK STATION\" ORDER BY stop_name;"  ).list();
+            SQLQuery query = session.createSQLQuery("SELECT stop_name FROM stops WHERE stop_name LIKE \"%METROLINK STATION\" ORDER BY stop_name;");
+            query.addEntity( Stop.class );
+            List<Stop> list = query.list();
             metrolinkCalculator.printStops( list );
             int stop = metrolinkCalculator.getStop( list.size() );
             System.out.println( "You selected: " + list.get( stop ).getStopName() );

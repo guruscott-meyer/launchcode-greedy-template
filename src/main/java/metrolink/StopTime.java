@@ -6,7 +6,10 @@
 
 package metrolink;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
@@ -19,7 +22,7 @@ public class StopTime {
     
     @Id
     @Column( name = "stop_id" )
-    private int id;
+    private int stopId;
     
     @Column( name = "arrival_time" )
     private String arrivalTime;
@@ -32,12 +35,12 @@ public class StopTime {
         this.arrivalTime = arrivalTime;
     }
     
-    public int getId() {
-        return this.id;
+    public int getStopId() {
+        return this.stopId;
     }
     
-    public void setId( int id ) {
-        this.id = id;
+    public void setStopId( int id ) {
+        this.stopId = id;
     }
     
     public String getArrivalTime() {
@@ -48,21 +51,22 @@ public class StopTime {
         this.arrivalTime = arrivalTime;
     }
     
+    @Override
     public boolean equals( Object obj ) {
         if( obj == null ) return false;
         if( !this.getClass().equals(obj.getClass())) return false;
         
         StopTime obj2 = (StopTime) obj;
         
-        if( ( this.id == obj2.getId() ) && ( this.arrivalTime.equals( obj2.getArrivalTime() ) ) ) {
+        if( ( this.stopId == obj2.getStopId() ) && ( this.arrivalTime.equals( obj2.getArrivalTime() ) ) ) {
             return true;
         }
         return false;
     }
     
+    @Override
     public int hashCode() {
-        int temp = 0;
-        temp = ( id + arrivalTime ).hashCode();
+        int temp = ( stopId + arrivalTime ).hashCode();
         return temp;
     }
                 

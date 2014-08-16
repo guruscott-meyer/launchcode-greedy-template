@@ -7,7 +7,12 @@
 package metrolink;
 
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
 
 /**
@@ -20,14 +25,14 @@ public class Stop {
     
     @Id
     @Column( name = "stop_id" )
-    private int id;
+    private int stopId;
     
     @Column( name = "stop_name" )
     private String stopName;
     
     @OneToMany
-    @JoinColumn( name = "stop_id")
-    @IndexColumn( name = "stop_id" )
+    @JoinColumn( name = "stops.stop_id")
+    @IndexColumn( name = "stop_times.stop_id" )
     private List<StopTime> stopTimes;
     
     public Stop() {
@@ -38,12 +43,12 @@ public class Stop {
         this.stopName = stopName;
     }
     
-    public int getId() {
-        return this.id;
+    public int getStopId() {
+        return this.stopId;
     }
     
-    public void setId( int id ) {
-        this.id = id;
+    public void setStopId( int id ) {
+        this.stopId = id;
     }
     
     public String getStopName() {
