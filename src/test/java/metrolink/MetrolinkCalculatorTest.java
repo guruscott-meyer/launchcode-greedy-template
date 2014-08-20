@@ -21,8 +21,6 @@ public class MetrolinkCalculatorTest {
     private static SessionFactory factory;
     private static MetrolinkCalculator metrolinkCalculator;
     
-    private Session session;
-    
     private static final double DELTA = 1e-15;
     
     @Before
@@ -33,7 +31,7 @@ public class MetrolinkCalculatorTest {
             System.err.println( "Failed to create sessionFactory object." + ex );
             throw new ExceptionInInitializerError( ex );
         }
-        session = factory.openSession();
+        
         metrolinkCalculator = new MetrolinkCalculator();
     }
     
@@ -41,12 +39,11 @@ public class MetrolinkCalculatorTest {
     public void threeFifteenInWellstonReturnsSix() {
         String testTime = "15:15:00";
         Transaction tx = null;
+        Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            SQLQuery query = session.createSQLQuery( "SELECT stop_id, arrival_time FROM stops JOIN stop_times WHERE stops.stop_name = \"WELLSTON METROLINK STATION\" GROUP BY arrival_time;");
-            query.addEntity( StopTime.class );
-            List<StopTime> list = query.list();
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list, testTime );
+            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
+            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
             
@@ -63,12 +60,11 @@ public class MetrolinkCalculatorTest {
     public void noonInWellstonReturnsZero() {
         String testTime = "12:01:00";
         Transaction tx = null;
+        Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            SQLQuery query = session.createSQLQuery( "SELECT stop_id, arrival_time FROM stops JOIN stop_times WHERE stops.stop_name = \"WELLSTON METROLINK STATION\" GROUP BY arrival_time;");
-            query.addEntity( StopTime.class );
-            List<StopTime> list = query.list();
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list, testTime );
+            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
+            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
             
@@ -85,12 +81,11 @@ public class MetrolinkCalculatorTest {
     public void midnightInBrentwoodReturnsThree() {
         String testTime = "23:58:00";
         Transaction tx = null;
+        Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            SQLQuery query = session.createSQLQuery( "SELECT stop_id, arrival_time FROM stops JOIN stop_times WHERE stops.stop_name = \"BRENTWOOD METROLINK STATION\" GROUP BY arrival_time;");
-            query.addEntity( StopTime.class );
-            List<StopTime> list = query.list();
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list, testTime );
+            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
+            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
             
@@ -107,12 +102,11 @@ public class MetrolinkCalculatorTest {
     public void twoAMInBrentwoodReturnsOneForty() {
         String testTime = "2:00:00";
         Transaction tx = null;
+        Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            SQLQuery query = session.createSQLQuery( "SELECT stop_id, arrival_time FROM stops JOIN stop_times WHERE stops.stop_name = \"BRENTWOOD METROLINK STATION\" GROUP BY arrival_time;");
-            query.addEntity( StopTime.class );
-            List<StopTime> list = query.list();
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list, testTime );
+            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
+            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
             
@@ -125,15 +119,15 @@ public class MetrolinkCalculatorTest {
         }
     }
     
-    @After
-    public void closeDatabase() {
-        try {
-            session.close();
-        } catch( HibernateException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        } finally {
-            session.close();
-        }
-    }
+//    @After
+//    public void closeDatabase() {
+//        try {
+//            session.close();
+//        } catch( HibernateException e ) {
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//            System.exit(0);
+//        } finally {
+//            session.close();
+//        }
+//    }
 }

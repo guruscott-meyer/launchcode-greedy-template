@@ -9,11 +9,13 @@ package metrolink;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.IndexColumn;
 
 /**
  *
@@ -24,15 +26,19 @@ import org.hibernate.annotations.IndexColumn;
 public class Stop {
     
     @Id
-    @Column( name = "stop_id" )
+    @GeneratedValue(strategy = IDENTITY)
+    @Column( name = "stop_id", unique=true, nullable=false )
     private int stopId;
     
     @Column( name = "stop_name" )
     private String stopName;
     
     @OneToMany
-    @JoinColumn( name = "stops.stop_id")
-    @IndexColumn( name = "stop_times.stop_id" )
+    @JoinTable( 
+            name = "stops_stop_times",
+            joinColumns = @JoinColumn( name = "stops_stop_id"),
+            inverseJoinColumns = @JoinColumn( name = "stop_times_stop_id" )
+    )
     private List<StopTime> stopTimes;
     
     public Stop() {
@@ -66,5 +72,5 @@ public class Stop {
     public List getStopTimes() {
         return stopTimes;
     }
-    
+ 
 }
