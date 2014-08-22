@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,12 +31,7 @@ public class Stop {
     @Column( name = "stop_name" )
     private String stopName;
     
-    @OneToMany
-    @JoinTable( 
-            name = "stops_stop_times",
-            joinColumns = @JoinColumn( name = "stops_stop_id"),
-            inverseJoinColumns = @JoinColumn( name = "stop_times_stop_id" )
-    )
+    @OneToMany(mappedBy="stop")
     private List<StopTime> stopTimes;
     
     public Stop() {
@@ -65,7 +58,7 @@ public class Stop {
         this.stopName = stopName;
     }
     
-    public void setStopTimes( List stopTimes ) {
+    public void setStopTimes( List<StopTime> stopTimes ) {
         this.stopTimes = stopTimes;
     }
     

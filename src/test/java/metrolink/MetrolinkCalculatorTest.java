@@ -3,10 +3,10 @@ package metrolink;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
@@ -42,9 +42,14 @@ public class MetrolinkCalculatorTest {
         Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
-            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
-            
+//            Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
+//            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
+            List<StopTime> list = session.createCriteria( StopTime.class )
+                    .createCriteria("stop")
+                        .add( Restrictions.eq( "stopName", "WELLSTON METROLINK STATION"))
+                    .list();
+            long timeResult = metrolinkCalculator.getNextArrivalTime(list, testTime);
+                    
             assertEquals( 6.0f, timeResult, DELTA );
             
         } catch( HibernateException e ) {
@@ -63,7 +68,7 @@ public class MetrolinkCalculatorTest {
         Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
+            Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
@@ -84,7 +89,7 @@ public class MetrolinkCalculatorTest {
         Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
+            Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
@@ -105,7 +110,7 @@ public class MetrolinkCalculatorTest {
         Session session = factory.openSession();
         try {
             tx = session.beginTransaction();
-            Stop stop = (Stop) session.createQuery( "from Stop s join s.stopTimes where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
+            Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );

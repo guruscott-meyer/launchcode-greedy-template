@@ -7,17 +7,18 @@
 package metrolink;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -37,7 +38,10 @@ public class Metrolink {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            List<Stop> list = session.createQuery("from Stop s where s.stopName like '%METROLINK STATION' order by s.stopName").list();
+            List<Stop> list = session.createCriteria( Stop.class )
+                    .add( Restrictions.like( "stopName", "%METROLINK STATION") )
+                    .addOrder( Order.asc("stopName") )
+                    .list();
             metrolinkCalculator.printStops( list );
             int stop = metrolinkCalculator.getStop( list.size() );
             System.out.println( "You selected: " + list.get( stop ).getStopName() );

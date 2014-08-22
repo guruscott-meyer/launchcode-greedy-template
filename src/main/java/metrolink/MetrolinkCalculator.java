@@ -45,7 +45,7 @@ public class MetrolinkCalculator {
     
     public long getNextArrivalTime( List<StopTime> stopTimes, String time ) {
         LocalTime[] timeArray = new LocalTime[ stopTimes.size() ];
-        for( int i = 0; i <= stopTimes.size(); i++ ) {
+        for( int i = 0; i < stopTimes.size(); i++ ) {
             timeArray[ i ] = convertTime( stopTimes.get( i ).getArrivalTime() );
         }
         Arrays.sort( timeArray );
@@ -59,6 +59,7 @@ public class MetrolinkCalculator {
         }
         if( timeResult == null ) {
             timeResult = timeArray[0];
+            System.out.println("Selecting first value");
         }
         long difference = convertedTime.until( timeResult, ChronoUnit.MINUTES );
         if( difference < 0 ) {
