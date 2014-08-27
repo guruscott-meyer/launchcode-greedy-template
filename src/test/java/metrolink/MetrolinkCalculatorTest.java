@@ -23,8 +23,6 @@ public class MetrolinkCalculatorTest {
     
     private static final double DELTA = 1e-15;
     
-    private static final double DELTA = 1e-15;
-    
     @Before
     public void openDatabase() {
         try{
@@ -43,26 +41,15 @@ public class MetrolinkCalculatorTest {
         Transaction tx = null;
         Session session = factory.openSession();
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:src/test/resources/metrolink.db");
-            statement = connection.createStatement();
-        } catch( SQLException sqle ) {
-            System.err.println( sqle.getClass().getName() + ": " + sqle.getMessage() );
-            System.exit(0);
-        }
-    }
-    
-    @Test
-    public void threeFifteenInWellstonReturnsSix() {
-        MetrolinkCalculator metrolinkCalculator = new MetrolinkCalculator();
-        String testTime = "15:15:00";
-        try {
-            ResultSet resultSet = statement.executeQuery( "SELECT arrival_time FROM stops NATURAL JOIN stop_times WHERE stops.stop_name = \"WELLSTON METROLINK STATION\" GROUP BY arrival_time;");
-            long timeResult = metrolinkCalculator.getNextArrivalTime(resultSet, testTime );
+            tx = session.beginTransaction();
+            Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
+            long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
             assertEquals( 6.0f, timeResult, DELTA );
             
-        } catch( SQLException sqle ) {
-            System.err.println( sqle.getClass().getName() + ": " + sqle.getMessage() );
+        } catch( HibernateException e ) {
+            if( tx != null ) tx.rollback();
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         } finally {
             session.close();
