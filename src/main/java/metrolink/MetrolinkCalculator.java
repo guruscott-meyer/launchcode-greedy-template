@@ -62,6 +62,7 @@ public class MetrolinkCalculator {
         }
         if( timeResult == null ) {
             timeResult = timeArray[0];
+            System.out.println("Selecting first value");
         }
         long difference = convertedTime.until( timeResult, ChronoUnit.MINUTES );
         if( difference < 0 ) {
