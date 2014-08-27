@@ -7,17 +7,21 @@
 package metrolink;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -37,11 +41,24 @@ public class Metrolink {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            List<Stop> list = session.createQuery("from Stop s where s.stopName like '%METROLINK STATION' order by s.stopName").list();
+            
+            Criteria criteria = session.createCriteria( Stop.class );
+            criteria.add( Restrictions.like( "stopName", "%METROLINK STATION", MatchMode.ANYWHERE ) );
+            criteria.addOrder( Order.asc("stopName") );
+            List<Stop> list = criteria.list();
+            
             metrolinkCalculator.printStops( list );
+            
             int stop = metrolinkCalculator.getStop( list.size() );
+            
             System.out.println( "You selected: " + list.get( stop ).getStopName() );
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list.get( stop ).getStopTimes(), LocalTime.now().toString() );
+            
+            Criteria criteria2 = session.createCriteria( StopTime.class );
+            criteria2.add( Restrictions.eq( "stopId", list.get( stop ).getStopId() ) );
+            List<StopTime>list2 = criteria2.list();
+            
+            long timeResult = metrolinkCalculator.getNextArrivalTime( list2, LocalTime.now().toString() );
+//            long timeResult = metrolinkCalculator.getNextArrivalTime( list.get( stop ).getStopTimes(), LocalTime.now().toString());
             System.out.println("The next train is arriving in " + timeResult + " minutes." );
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();

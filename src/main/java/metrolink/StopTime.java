@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,15 +25,16 @@ import javax.persistence.Table;
 public class StopTime {
     
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column( name = "stop_id", unique=true, nullable=false )
+//    @GeneratedValue(strategy = IDENTITY)
+    @Column( name = "stop_id" )
     private int stopId;
     
     @Column( name = "arrival_time" )
     private String arrivalTime;
     
-//    @ManyToOne
-//    private Stop stop;
+    @ManyToOne
+    @JoinColumn(name="stop_id", insertable=false, updatable=false)
+    private Stop stop;
     
     public StopTime() {
         
@@ -58,13 +60,13 @@ public class StopTime {
         this.arrivalTime = arrivalTime;
     }
     
-//    public Stop getStop() {
-//        return this.stop;
-//    }
-//    
-//    public void setStop( Stop stop ) {
-//        this.stop = stop;
-//    }
+    public Stop getStop() {
+        return this.stop;
+    }
+    
+    public void setStop( Stop stop ) {
+        this.stop = stop;
+    }
     
     @Override
     public boolean equals( Object obj ) {

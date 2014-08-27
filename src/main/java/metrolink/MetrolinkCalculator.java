@@ -45,13 +45,16 @@ public class MetrolinkCalculator {
     
     public long getNextArrivalTime( List<StopTime> stopTimes, String time ) {
         LocalTime[] timeArray = new LocalTime[ stopTimes.size() ];
-        for( int i = 0; i <= stopTimes.size(); i++ ) {
+        for( int i = 0; i < stopTimes.size(); i++ ) {
             timeArray[ i ] = convertTime( stopTimes.get( i ).getArrivalTime() );
+            /* debugging code */
+            System.out.println( stopTimes.get( i ).getArrivalTime() );
         }
         Arrays.sort( timeArray );
         LocalTime convertedTime = convertTime( time );
         LocalTime timeResult = null;
         for (LocalTime currentTime : timeArray) {
+//            System.out.println( currentTime );
             if( currentTime.compareTo( convertedTime ) >= 0 ) {
                 timeResult = currentTime;
                 break;
