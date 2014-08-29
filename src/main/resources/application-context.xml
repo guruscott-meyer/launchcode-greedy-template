@@ -43,7 +43,7 @@
     
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.sqlite.JDBC" />
-        <property name="url" value="jdbc:sqlite:metrolink.db" />
+        <property name="url" value="jdbc:sqlite:C:/users/Scott Meyer/metrolink-project/src/main/resources/metrolink.db" />
     </bean>
 
 <!--    <bean id="metrolinkCalculator" class="metrolink.MetrolinkCalculator"/>

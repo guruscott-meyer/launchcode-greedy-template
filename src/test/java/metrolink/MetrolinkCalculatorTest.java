@@ -66,7 +66,7 @@ public class MetrolinkCalculatorTest {
             Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'WELLSTON METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
-            assertEquals( 6.0f, timeResult, DELTA );
+            assertEquals( 0.0f, timeResult, DELTA );
             
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();
@@ -87,7 +87,7 @@ public class MetrolinkCalculatorTest {
             Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
-            assertEquals( 6.0f, timeResult, DELTA );
+            assertEquals( 3.0f, timeResult, DELTA );
             
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();
@@ -108,7 +108,7 @@ public class MetrolinkCalculatorTest {
             Stop stop = (Stop) session.createQuery( "from Stop s where s.stopName = 'BRENTWOOD METROLINK STATION'").uniqueResult();
             long timeResult = metrolinkCalculator.getNextArrivalTime( stop.getStopTimes(), testTime );
             
-            assertEquals( 6.0f, timeResult, DELTA );
+            assertEquals( 140.0f, timeResult, DELTA );
             
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();

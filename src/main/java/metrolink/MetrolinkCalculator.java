@@ -47,8 +47,6 @@ public class MetrolinkCalculator {
         LocalTime[] timeArray = new LocalTime[ stopTimes.size() ];
         for( int i = 0; i < stopTimes.size(); i++ ) {
             timeArray[ i ] = convertTime( stopTimes.get( i ).getArrivalTime() );
-            /* debugging code */
-            System.out.println( stopTimes.get( i ).getArrivalTime() );
         }
         Arrays.sort( timeArray );
         LocalTime convertedTime = convertTime( time );

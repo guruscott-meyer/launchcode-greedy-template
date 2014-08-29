@@ -11,6 +11,7 @@
     <mapping class="metrolink.Metrolink" />
     <mapping class="metrolink.MetrolinkCalculator" />
     <mapping class="metrolink.Stop" />
+    <mapping class="metrolink.StopTrip" />
     <mapping class="metrolink.StopTime" />
     
   </session-factory>

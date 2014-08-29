@@ -53,12 +53,12 @@ public class Metrolink {
             
             System.out.println( "You selected: " + list.get( stop ).getStopName() );
             
-            Criteria criteria2 = session.createCriteria( StopTime.class );
-            criteria2.add( Restrictions.eq( "stopId", list.get( stop ).getStopId() ) );
-            List<StopTime>list2 = criteria2.list();
-            
-            long timeResult = metrolinkCalculator.getNextArrivalTime( list2, LocalTime.now().toString() );
-//            long timeResult = metrolinkCalculator.getNextArrivalTime( list.get( stop ).getStopTimes(), LocalTime.now().toString());
+//            Criteria criteria2 = session.createCriteria( StopTime.class );
+//            criteria2.add( Restrictions.eq( "stopId", list.get( stop ).getStopId() ) );
+//            List<StopTime> list2 = criteria2.list();
+//            
+//            long timeResult = metrolinkCalculator.getNextArrivalTime( list2, LocalTime.now().toString() );
+            long timeResult = metrolinkCalculator.getNextArrivalTime( list.get( stop ).getStopTimes(), LocalTime.now().toString());
             System.out.println("The next train is arriving in " + timeResult + " minutes." );
         } catch( HibernateException e ) {
             if( tx != null ) tx.rollback();
