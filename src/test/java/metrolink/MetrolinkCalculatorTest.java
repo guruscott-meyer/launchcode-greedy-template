@@ -1,15 +1,13 @@
 package metrolink;
 
-import java.util.List;
-import org.hibernate.SessionFactory;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import metrolink.core.entities.Stop;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.junit.*;
+import org.mockito.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * User: Scott Meyer
@@ -19,20 +17,20 @@ import static org.junit.Assert.assertEquals;
 public class MetrolinkCalculatorTest {
 
     private static SessionFactory factory;
+
     private static MetrolinkCalculator metrolinkCalculator;
     
     private static final double DELTA = 1e-15;
     
     @Before
     public void openDatabase() {
+        metrolinkCalculator = new MetrolinkCalculator();
         try{
             factory = new Configuration().configure().buildSessionFactory();
         }catch( HibernateException ex ) {
             System.err.println( "Failed to create sessionFactory object." + ex );
             throw new ExceptionInInitializerError( ex );
         }
-        
-        metrolinkCalculator = new MetrolinkCalculator();
     }
     
     @Test

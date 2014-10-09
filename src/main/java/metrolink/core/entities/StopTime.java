@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package metrolink;
+package metrolink.core.entities;
+
+import metrolink.core.entities.StopTrip;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -20,16 +22,11 @@ import javax.persistence.Table;
 public class StopTime {
     
     @EmbeddedId
-//    @GeneratedValue(strategy = IDENTITY)
     private StopTrip stopTrip;
     
     @Column( name = "arrival_time" )
     private String arrivalTime;
-    
-//    @ManyToOne
-//    @JoinColumn(name="stop_id", insertable=false, updatable=false)
-//    private Stop stop;
-    
+
     public StopTime() {
         
     }
@@ -53,32 +50,5 @@ public class StopTime {
     public void setArrivalTime( String arrivalTime ) {
         this.arrivalTime = arrivalTime;
     }
-    
-//    public Stop getStop() {
-//        return this.stop;
-//    }
-//    
-//    public void setStop( Stop stop ) {
-//        this.stop = stop;
-//    }
-    
-//    @Override
-//    public boolean equals( Object obj ) {
-//        if( obj == null ) return false;
-//        if( !this.getClass().equals(obj.getClass())) return false;
-//        
-//        StopTime obj2 = (StopTime) obj;
-//        
-//        if( ( this.stopId == obj2.getStopId() ) && ( this.arrivalTime.equals( obj2.getArrivalTime() ) ) ) {
-//            return true;
-//        }
-//        return false;
-//    }
-//    
-//    @Override
-//    public int hashCode() {
-//        int temp = ( stopId + arrivalTime ).hashCode();
-//        return temp;
-//    }
                 
 }

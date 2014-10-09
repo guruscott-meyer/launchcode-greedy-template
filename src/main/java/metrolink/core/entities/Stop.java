@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package metrolink;
+package metrolink.core.entities;
+
+import metrolink.core.entities.StopTime;
 
 import java.util.List;
 import javax.persistence.Column;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package metrolink;
+package metrolink.core.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -39,4 +39,8 @@ public class StopTrip implements Serializable{
         return this.tripId;
     }
 
+    @Override
+    public String toString() {
+        return stopId + "-" + tripId;
+    }
 }

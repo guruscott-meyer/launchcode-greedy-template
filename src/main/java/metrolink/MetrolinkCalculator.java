@@ -11,6 +11,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.List;
+
+import metrolink.core.entities.Stop;
+import metrolink.core.entities.StopTime;
 import org.springframework.stereotype.Component;
 import org.hibernate.HibernateException;
 
@@ -23,13 +26,6 @@ import org.hibernate.HibernateException;
 public class MetrolinkCalculator {
     
     private static final long ONEDAYINMINUTES = 1440;
-    
-    public void printStops( List<Stop> stops ) throws HibernateException {
-        for( int i = 0; i < stops.size(); i++ ) {
-            System.out.print( i + ": ");
-            System.out.println( stops.get(i).getStopName() );
-        }
-    }
     
     public int getStop( int stopIndex ) {
         Scanner scanner = new Scanner( System.in );

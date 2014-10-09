@@ -8,8 +8,11 @@ package metrolink;
 
 import java.time.LocalTime;
 import java.util.List;
+
+import metrolink.core.entities.Stop;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.service.ServiceRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +50,7 @@ public class Metrolink {
             criteria.addOrder( Order.asc("stopName") );
             List<Stop> list = criteria.list();
             
-            metrolinkCalculator.printStops( list );
+//            metrolinkCalculator.printStops( list );
             
             int stop = metrolinkCalculator.getStop( list.size() );
             
@@ -72,7 +75,7 @@ public class Metrolink {
     
     public static void main(String[] varArgs) {
         try{
-            factory = new Configuration().configure().buildSessionFactory();
+            factory = new Configuration().configure().buildSessionFactory(  );
         }catch( Throwable ex ) {
             System.err.println( "Failed to create sessionFactory object." + ex );
             throw new ExceptionInInitializerError( ex );
