@@ -10,6 +10,7 @@ public interface StopService {
 
     public Stop find(int stopId);
 
-    public StopList findAllStops();
+    public Stop findByStopName(String name);
 
+    public StopList findAllStops();
 }

@@ -13,6 +13,10 @@ public class StopTimeList {
         return stopTimes;
     }
 
+    public StopTimeList(List<StopTime> stopTimes) {
+        this.stopTimes = stopTimes;
+    }
+
     public void setStopTimes(List<StopTime> stopTimes) {
         this.stopTimes = stopTimes;
     }

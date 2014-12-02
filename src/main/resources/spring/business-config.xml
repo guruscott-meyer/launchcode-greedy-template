@@ -1,22 +1,30 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-        <context:component-scan base-package="metrolink.core.repositories.jpa"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <context:component-scan base-package="metrolink.core.repositories.jpa"/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="org.sqlite.JDBC" />
-        <property name="url" value="jdbc:sqlite:test" />
+        <property name="url" value="jdbc:sqlite:metrolink.db" />
     </bean>
+
+
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="username" value="sa"/>
+        <property name="password" value="sa"/>
+        <property name="url" value="jdbc:h2:mem:test"/>
+        <property name="driverClassName" value="org.h2.Driver"/>
+    </bean>-->
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -27,33 +35,17 @@
             <map>
                 <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
                 <entry key="hibernate.show_sql" value="true"/>
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect" />
+                <entry key="hibernate.current_session_context_class" value="thread" />
             </map>
         </property>
-        <property name="packagesToScan" value="metrolink.core.models.entities"/>
+        <property name="packagesToScan" value="metrolink.core.entities"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+    <tx:annotation-driven/>
 
-        <property name="annotatedClasses">
-            <list>
-                <value>metrolink.Metrolink</value>
-                <value>metrolink.MetrolinkCalculator</value>
-                <value>metrolink.Stop</value>
-                <value>metrolink.StopTime</value>
-            </list>
-        </property>
-
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
-            </props>
-        </property>
-    </bean>
-
-    <!--<tx:annotation-driven/>-->
-
-    <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+    
+    <context:component-scan base-package="metrolink.core.services.impl" />
 
         </beans>

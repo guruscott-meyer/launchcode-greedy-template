@@ -149,7 +149,7 @@ String[] foreignKey, String referencedTable, String[] primaryKey,
 boolean referencesPrimaryKey) {
 throw new UnsupportedOperationException("No add foreign key syntax supported by SQLiteDialect");
 }
- 
+
 public String getAddPrimaryKeyConstraintString(String constraintName) {
 throw new UnsupportedOperationException("No add primary key syntax supported by SQLiteDialect");
 }

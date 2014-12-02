@@ -1,5 +1,6 @@
 package metrolink.core.services;
 
+import metrolink.core.entities.Stop;
 import metrolink.core.entities.StopTime;
 import metrolink.core.entities.StopTrip;
 import metrolink.core.services.util.StopTimeList;
@@ -12,4 +13,6 @@ public interface StopTimeService {
     public StopTime find( StopTrip id );
 
     public StopTimeList findAllStopTimes();
+
+    public StopTimeList findStopTimes( int StopId );
 }
