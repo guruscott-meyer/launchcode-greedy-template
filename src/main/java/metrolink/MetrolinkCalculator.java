@@ -8,37 +8,21 @@ package metrolink;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Scanner;
 import java.util.Arrays;
 import java.util.List;
 
-import metrolink.core.entities.Stop;
 import metrolink.core.entities.StopTime;
 import org.springframework.stereotype.Component;
-import org.hibernate.HibernateException;
 
 /**
  *
  * @author Scott Meyer
  */
 
-@Component
 public class MetrolinkCalculator {
     
     private static final long ONEDAYINMINUTES = 1440;
-    
-    public int getStop( int stopIndex ) {
-        Scanner scanner = new Scanner( System.in );
-        int stop = 1;
-        do {
-            System.out.print( "Input current stop: " );
-            stop = scanner.nextInt();
-            System.out.print( "\n" );
-        } while( stop < 1 || stop > stopIndex );
-        
-        return stop;
-    }
-    
+
     public long getNextArrivalTime( List<StopTime> stopTimes, String time ) {
         LocalTime[] timeArray = new LocalTime[ stopTimes.size() ];
         for( int i = 0; i < stopTimes.size(); i++ ) {
